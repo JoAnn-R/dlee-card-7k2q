@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#1B1F49">
+<title>D-Lee Brown – Digital Business Card</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root{--navy:#3F4691;--navy2:#2f3578;--gold:#3F4691;--lav:#3F4691;--bg:#F4F7FC;--card:#D9E5F7;--ink:#14173A;--muted:#4a5078;--line:#b9c9e6;--accent:#3F4691}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink);min-height:100dvh;display:flex;justify-content:center;padding:24px 16px;-webkit-tap-highlight-color:transparent}
+  .card{width:100%;max-width:440px;background:var(--card);border-radius:28px;box-shadow:0 24px 60px rgba(20,23,70,.22);overflow:hidden;align-self:flex-start;animation:rise .6s cubic-bezier(.2,.7,.2,1) both}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}}
+  @media (prefers-reduced-motion:reduce){.card{animation:none}*{transition:none!important}}
+  .head{position:relative;padding:32px 28px 26px;color:var(--ink)}
+  .logo{width:68px;height:68px;border-radius:16px;background:#fff;padding:6px;object-fit:contain;display:block}
+  .avatar{width:68px;height:68px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);display:block}
+  .ids{display:flex;gap:12px;align-items:center}
+  h1{font-family:"Playfair Display",Georgia,serif;font-weight:700;font-size:2rem;line-height:1.1;margin:22px 0 0;letter-spacing:.2px}
+  .rule{width:48px;height:2px;background:var(--gold);margin:14px 0 12px}
+  .title{margin:0;font-size:.78rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+  .company{margin:6px 0 0;color:var(--muted);font-style:italic;font-size:.95rem}
+  ul{list-style:none;margin:0;padding:10px 28px 4px}
+  li a{display:flex;gap:14px;align-items:center;padding:13px 0;min-height:56px;color:inherit;text-decoration:none;border-bottom:1px solid var(--line);transition:transform .2s}
+  li:last-child a{border:0}
+  li a:active{transform:scale(.985)}
+  .ic{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--gold);display:grid;place-items:center;flex:none;color:var(--gold)}
+  .ic svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+  small{display:block;color:var(--muted);font-size:.68rem;text-transform:uppercase;letter-spacing:.12em;margin-bottom:2px}
+  .val{font-size:.98rem;overflow-wrap:anywhere}
+  .qr{display:flex;flex-direction:column;align-items:center;padding:14px 28px 6px;gap:8px;color:var(--muted);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase}
+  .qr img{width:168px;height:168px;border-radius:16px;background:#fff;padding:10px;box-shadow:0 0 0 1px var(--line)}
+  .actions{display:grid;gap:12px;padding:16px 28px 28px}
+  button{font:inherit;font-weight:600;border:0;border-radius:14px;min-height:52px;padding:14px;cursor:pointer;transition:transform .15s,box-shadow .2s,background .2s}
+  button:active{transform:scale(.98)}
+  .primary{background:linear-gradient(180deg,#2a3070,var(--navy));color:#fff;box-shadow:0 8px 20px rgba(27,31,73,.28)}
+  .primary:hover{box-shadow:0 10px 26px rgba(27,31,73,.38)}
+  .ghost{background:transparent;color:var(--accent);border:1.5px solid var(--gold)}
+  .ghost:hover{background:rgba(201,169,110,.12)}
+  button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+  dialog{border:0;border-radius:22px;padding:26px;width:min(92vw,420px);background:var(--card);color:var(--ink)}
+  dialog h2{font-family:"Playfair Display",Georgia,serif;margin:0}
+  dialog::backdrop{background:rgba(8,9,32,.6);backdrop-filter:blur(4px)}
+  label{display:block;font-size:.82rem;font-weight:600;margin:12px 0 4px}
+  input,textarea{width:100%;font:inherit;font-size:16px;padding:12px;border-radius:10px;border:1px solid var(--lav);background:transparent;color:inherit}
+  .row{display:flex;gap:10px;margin-top:18px}.row>*{flex:1}
+  .note{font-size:.78rem;color:var(--muted);margin-top:10px}
+  .hp{position:absolute;left:-9999px}
+</style>
+</head>
+<body>
+<main class="card" id="card" aria-live="polite">Loading…</main>
+
+<dialog id="dlg">
+  <form id="shareForm" method="dialog">
+    <h2>Share your info</h2>
+    <p class="note">Your details go only to <span id="toName"></span>.</p>
+    <label for="f_name">Name *</label><input id="f_name" name="name" required autocomplete="name">
+    <label for="f_email">Email *</label><input id="f_email" name="email" type="email" required autocomplete="email">
+    <label for="f_phone">Phone</label><input id="f_phone" name="phone" type="tel" autocomplete="tel">
+    <label for="f_company">Company</label><input id="f_company" name="company" autocomplete="organization">
+    <label for="f_msg">Message</label><textarea id="f_msg" name="message" rows="3"></textarea>
+    <input class="hp" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <div class="row"><button type="button" class="ghost" id="cancel">Cancel</button><button class="primary" type="submit">Send</button></div>
+    <p class="note" id="status" role="status"></p>
+  </form>
+</dialog>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script>
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const tel=s=>s.replace(/[^\d+]/g,'');
+const vcardEsc=s=>String(s).replace(/([,;\\])/g,'\\$1').replace(/\n/g,'\\n');
+
+function buildVCard(c){
+  const parts=c.name.trim().split(/\s+/),last=parts.pop(),first=parts.join(' ');
+  const L=['BEGIN:VCARD','VERSION:3.0',`N:${vcardEsc(last)};${vcardEsc(first)};;;`,`FN:${vcardEsc(c.name)}`,
+    `ORG:${vcardEsc(c.company)}`,`TITLE:${vcardEsc(c.title)}`];
+  (c.phones||[]).forEach(p=>L.push(`TEL;TYPE=${/mobile/i.test(p.label)?'CELL':'WORK,VOICE'}:${tel(p.value)}`));
+  if(c.email)L.push(`EMAIL;TYPE=INTERNET,WORK:${c.email}`);
+  if(c.website)L.push(`URL:${c.website}`);
+  const a=c.address;if(a)L.push(`ADR;TYPE=WORK:;;${vcardEsc(a.street)};${vcardEsc(a.city)};${vcardEsc(a.region)};${vcardEsc(a.postal)};${vcardEsc(a.country||'')}`);
+  (c.social||[]).forEach(s=>L.push(`URL;TYPE=${vcardEsc(s.label)}:${s.url}`));
+  L.push('END:VCARD');return L.join('\r\n');
+}
+
+const ICONS={
+  phone:'<rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/>',
+  mail:'<rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 6.5 12 13l8.5-6.5"/>',
+  web:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.7 2.7 2.7 15.3 0 18M12 3c-2.7 2.7-2.7 15.3 0 18"/>',
+  pin:'<path d="M12 21s7-6.2 7-11.5a7 7 0 1 0-14 0C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
+  link:'<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>'
+};
+
+(async function(){
+  let c;
+  try{c=await (await fetch('config.json')).json()}catch(e){document.getElementById('card').textContent='Could not load card.';return}
+  const a=c.address,addr=a?`${a.street}, ${a.city}, ${a.region} ${a.postal}`:'';
+  const rows=[];
+  (c.phones||[]).forEach(p=>rows.push(['phone',p.label,p.value,'tel:'+tel(p.value)]));
+  if(c.email)rows.push(['mail','Email',c.email,'mailto:'+c.email]);
+  if(c.website)rows.push(['web','Website',c.website.replace(/^https?:\/\//,''),c.website]);
+  if(addr)rows.push(['pin','Address',addr,'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(addr)]);
+  (c.social||[]).forEach(s=>rows.push(['link',s.label,s.url.replace(/^https?:\/\//,''),s.url]));
+  const logoImg=c.logo?`<img class="logo" src="${esc(c.logo)}" alt="${esc(c.company)} logo">`:'';
+  const photoImg=c.photo?`<img class="avatar" src="${esc(c.photo)}" alt="${esc(c.name)}">`:'';
+  document.getElementById('card').innerHTML=`
+    <section class="head"><div class="ids">${logoImg}${photoImg}</div>
+    <h1>${esc(c.name)}${c.credentials?` <span style="font-size:.9rem;font-family:Inter,sans-serif;font-weight:500;color:var(--lav)">${esc(c.credentials)}</span>`:''}</h1>
+    <div class="rule"></div><p class="title">${esc(c.title)}</p><p class="company">${esc(c.company)}</p></section>
+    <ul>${rows.map(([i,l,v,h])=>`<li><a href="${esc(h)}" ${h.startsWith('http')?'target="_blank" rel="noopener"':''}><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24">${ICONS[i]}</svg></span><span><small>${esc(l)}</small><span class="val">${esc(v)}</span></span></a></li>`).join('')}</ul>
+    <div class="qr"><div id="qrBox"></div><span>Scan to connect</span></div>
+    <div class="actions"><button class="primary" id="save">Save Contact</button><button class="ghost" id="share">Share my info with ${esc(c.name.split(' ')[0])}</button></div>`;
+
+  // QR of this page's URL (final public URL once hosted)
+  try{const q=qrcode(0,'M');q.addData(location.href.split('#')[0]);q.make();document.getElementById('qrBox').innerHTML=q.createImgTag(5,0)}catch(e){}
+
+  document.getElementById('save').onclick=()=>{
+    const blob=new Blob([buildVCard(c)],{type:'text/vcard'}),u=URL.createObjectURL(blob),l=document.createElement('a');
+    l.href=u;l.download=c.name.replace(/\s+/g,'_')+'.vcf';document.body.appendChild(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(u),2000)};
+
+  const dlg=document.getElementById('dlg'),form=document.getElementById('shareForm'),st=document.getElementById('status');
+  document.getElementById('toName').textContent=c.name;
+  document.getElementById('share').onclick=()=>{st.textContent='';dlg.showModal()};
+  document.getElementById('cancel').onclick=()=>dlg.close();
+  form.onsubmit=async e=>{
+    e.preventDefault();const d=Object.fromEntries(new FormData(form));if(d._gotcha)return;delete d._gotcha;
+    const ep=c.share&&c.share.formEndpoint,mt=c.share&&c.share.mailtoFallback;
+    if(ep){try{const res=await fetch(ep,{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(d)});
+        if(!res.ok)throw 0;st.textContent='Sent! Thank you.';form.reset();setTimeout(()=>dlg.close(),1500);return}catch(_){st.textContent='Could not send. Please try again.';return}}
+    if(mt){const body=Object.entries(d).map(([k,v])=>`${k}: ${v}`).join('\n');location.href=`mailto:${mt}?subject=${encodeURIComponent('Contact from your digital card')}&body=${encodeURIComponent(body)}`;return}
+    st.textContent='Sharing is not set up yet (add a form endpoint in config.json).';
+  };
+})();
+</script>
+</body>
+</html>

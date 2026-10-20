@@ -1,0 +1,21 @@
+{
+  "name": "D-Lee Brown",
+  "credentials": "",
+  "title": "Chief Finance Officer",
+  "company": "Matcom",
+  "phones": [
+    { "label": "Office", "value": "416-667-0463" },
+    { "label": "Mobile", "value": "416-726-2543" }
+  ],
+  "email": "dbrown@matcom.com",
+  "website": "https://www.matcom.com",
+  "address": { "street": "400 Parkhurst Square #2", "city": "Brampton", "region": "ON", "postal": "L6T 5W1", "country": "Canada" },
+  "social": [],
+  "photo": "",
+  "logo": "logo.png",
+  "theme": { "accent": "#3F4691", "accentSoft": "#AEB2D8", "ink": "#1B1D3A" },
+  "share": {
+    "formEndpoint": "",
+    "mailtoFallback": ""
+  }
+}
