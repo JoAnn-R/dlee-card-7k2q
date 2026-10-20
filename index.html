@@ -34,7 +34,8 @@
   .qr img{width:168px;height:168px;border-radius:16px;background:#fff;padding:10px;box-shadow:0 0 0 1px var(--line)}
   .actions{display:grid;gap:12px;padding:16px 28px 28px}
   button{font:inherit;font-weight:600;border:0;border-radius:14px;min-height:52px;padding:14px;cursor:pointer;transition:transform .15s,box-shadow .2s,background .2s}
-  button:active{transform:scale(.98)}
+  .btn{display:flex;align-items:center;justify-content:center;font-weight:600;border-radius:14px;min-height:52px;padding:14px;text-decoration:none;transition:transform .15s,box-shadow .2s}
+  .btn:active,button:active{transform:scale(.98)}
   .primary{background:linear-gradient(180deg,#2a3070,var(--navy));color:#fff;box-shadow:0 8px 20px rgba(27,31,73,.28)}
   .primary:hover{box-shadow:0 10px 26px rgba(27,31,73,.38)}
   .ghost{background:transparent;color:var(--accent);border:1.5px solid var(--gold)}
@@ -112,14 +113,11 @@ const ICONS={
     <div class="rule"></div><p class="title">${esc(c.title)}</p><p class="company">${esc(c.company)}</p></section>
     <ul>${rows.map(([i,l,v,h])=>`<li><a href="${esc(h)}" ${h.startsWith('http')?'target="_blank" rel="noopener"':''}><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24">${ICONS[i]}</svg></span><span><small>${esc(l)}</small><span class="val">${esc(v)}</span></span></a></li>`).join('')}</ul>
     <div class="qr"><div id="qrBox"></div><span>Scan to connect</span></div>
-    <div class="actions"><button class="primary" id="save">Save Contact</button><button class="ghost" id="share">Share my info with ${esc(c.name.split(' ')[0])}</button></div>`;
+    <div class="actions"><a class="primary btn" id="save" href="dlee-brown.vcf" download="D-Lee_Brown.vcf">Save Contact</a><button class="ghost" id="share">Share my info with ${esc(c.name.split(' ')[0])}</button></div>`;
 
   // QR of this page's URL (final public URL once hosted)
   try{const q=qrcode(0,'M');q.addData(location.href.split('#')[0]);q.make();document.getElementById('qrBox').innerHTML=q.createImgTag(5,0)}catch(e){}
 
-  document.getElementById('save').onclick=()=>{
-    const blob=new Blob([buildVCard(c)],{type:'text/vcard'}),u=URL.createObjectURL(blob),l=document.createElement('a');
-    l.href=u;l.download=c.name.replace(/\s+/g,'_')+'.vcf';document.body.appendChild(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(u),2000)};
 
   const dlg=document.getElementById('dlg'),form=document.getElementById('shareForm'),st=document.getElementById('status');
   document.getElementById('toName').textContent=c.name;

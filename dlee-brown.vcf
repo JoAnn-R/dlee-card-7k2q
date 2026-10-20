@@ -1,0 +1,12 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Brown;D-Lee;;;
+FN:D-Lee Brown
+ORG:Matcom
+TITLE:Chief Finance Officer
+TEL;TYPE=WORK,VOICE:4166670463
+TEL;TYPE=CELL:4167262543
+EMAIL;TYPE=INTERNET,WORK:dbrown@matcom.com
+URL:https://www.matcom.com
+ADR;TYPE=WORK:;;400 Parkhurst Square #2;Brampton;ON;L6T 5W1;Canada
+END:VCARD
